@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 301966153}
   - component: {fileID: 301966152}
   - component: {fileID: 301966154}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 1471979064}
   - component: {fileID: 1471979063}
   - component: {fileID: 1471979065}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +602,7 @@ Transform:
   m_GameObject: {fileID: 1471979062}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.5700665, y: -5.466339, z: 0.17746022}
+  m_LocalPosition: {x: -3.5700665, y: -6.07, z: 0.17746022}
   m_LocalScale: {x: 10.542, y: 19.692, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -704,6 +704,18 @@ PrefabInstance:
     - target: {fileID: 2151086074154137726, guid: a1ca55c21e51fd2488644372c9b57293, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090708437403914313, guid: a1ca55c21e51fd2488644372c9b57293, type: 3}
+      propertyPath: speed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060605394036832693, guid: a1ca55c21e51fd2488644372c9b57293, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7755107312656518612, guid: a1ca55c21e51fd2488644372c9b57293, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 71.76
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
