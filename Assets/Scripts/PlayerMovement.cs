@@ -1,202 +1,91 @@
-﻿using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float jumpPower;
-    [SerializeField] public LayerMask groundLayer;
-    [SerializeField] public LayerMask wallLayer;
-    private Rigidbody2D body;
-    private Animator anim;
-    private BoxCollider2D boxCollider2D;
-    [SerializeField] private float wallJumpCooldown;
-    public GameManager gameManager; // Reference to the Game Manager script
-    public bool deathState = false; // Set default death state to false
-    private float horizontalInput;
-
-    [SerializeField] private HealthSystem healthSystem; // 👈 This will now be visible
+    public float moveSpeed = 5f;        // Horizontal movement speed
+    public float jumpForce = 10f;       // Force applied when jumping
+    public Rigidbody2D rb;              // Reference to Rigidbody2D component
 
 
-    private SpriteRenderer spritegraphic;
+    private float horizontalInput;      // Store horizontal input
+    public bool isGrounded;            // Is the player on the ground?
+    private bool canDoubleJump;         // Can the player perform a double jump?
 
 
-    void Start()
+    public Transform groundCheck;       // Position to check if grounded
+    public float groundCheckRadius = 0.2f; // Radius of ground check circle
+    public LayerMask groundLayer;       // Layer considered as ground
+
+
+
+
+
+
+    void Update()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
+        // Get horizontal input (-1 for left, 1 for right)
+        horizontalInput = Input.GetAxisRaw("Horizontal");
 
 
-    public void Awake()
-    {
-        //Grab references for rigidbody and animator from object
-        body = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
-
-        spritegraphic = GetComponentInChildren<SpriteRenderer>();
-    }
-
-    public void Update()
-    {
-        horizontalInput = Input.GetAxis("Horizontal");
-
-        // 1. Handle Cooldown and Horizontal Movement
-        if (wallJumpCooldown > 0)
+        // Flip the player's sprite to face the direction of movement
+        if (horizontalInput < 0)
         {
-            // Decrement cooldown (only for movement blocking)
-            wallJumpCooldown -= Time.deltaTime;
+            transform.localScale = new Vector3(-1, 1, 1); // Face left
+        }
+        else if (horizontalInput > 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1); // Face right
         }
 
-        // Only allow horizontal movement if not in a wall jump cooldown (or if the cooldown is just for a short 'launch' period)
-        if (wallJumpCooldown <= 0)
+
+        // Check if the player is on the ground (should happen before jump input)
+        isGrounded = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, groundLayer);
+
+
+
+        // Jump input
+        if (Input.GetButtonDown("Jump"))
         {
-            // Standard horizontal movement
-            body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
-        }
-
-        // 2. Player Flip Logic
-        // Keep your existing flip logic (it's correct)
-        if (horizontalInput > 0.01f)
-            spritegraphic.flipX = false;
-        else if (horizontalInput < -0.01f)
-            spritegraphic.flipX = true;
-
-        // 3. Animator Updates
-        anim.SetBool("run", horizontalInput != 0);
-        anim.SetBool("grounded", isGrounded());
-
-        // 4. Wall Slide Logic (runs regardless of movement cooldown)
-        if (onWall() && !isGrounded() && wallJumpCooldown <= 0)
-        {
-            // Apply wall slide effect
-            body.gravityScale = 0;
-            body.linearVelocity = Vector2.zero; // Or a controlled vertical slide velocity
-        }
-        else
-        {
-            // Restore normal gravity when not wall sliding
-            body.gravityScale = 2;
-        }
-
-        // 5. Jump Input (Always check for jump)
-        if (Input.GetKeyDown(KeyCode.Space)) // Using GetKeyDown for cleaner single-press jump
-        {
-            Jump();
-        }
-
-    }
-
-    public void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Coin")
-        {
-            gameManager.coinsCounter += 1;
-            Destroy(other.gameObject);
-            Debug.Log("Player has collected a coin!");
-
-        }
-       
-        if (other.gameObject.tag == "Finish")
-        {
-            // Game will reload in 3 seconds
-            gameManager.Invoke("ReloadLevel", 3);
-        }
-        if (other.gameObject.tag == "Finish")
-        {
-            // Game will reload in 3 seconds
-            gameManager.Invoke("EndGame", 3);
-        }
-
-    }
-
-
-
-    // Inside PlayerMovement.cs
-    public void Jump()
-    {
-        if (isGrounded())
-        {
-            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpPower);
-            anim.SetTrigger("jump");
-        }
-        else if (onWall() && !isGrounded())
-        {
-            int wallDir = getWallDirection();
-
-            if (wallDir != 0) // Wall detected
+            if (isGrounded)
             {
-                float wallJumpX = 7.5f;
-                float wallJumpY = 7.5f;
-                float wallJumpDuration = 0.3f;
-
-                // Apply force AWAY from the wall (jumpDirection is the opposite of the wall's direction)
-                float jumpDirection = -wallDir;
-
-                body.linearVelocity = new Vector2(jumpDirection * wallJumpX, wallJumpY);
-
-                // Face the direction of the jump
-                spritegraphic.flipX = jumpDirection < 0; // Flip sprite if jumping left
-
-                // ... (keep the rest of your wall jump logic)
-                body.gravityScale = 7;
-                wallJumpCooldown = wallJumpDuration;
-                anim.SetTrigger("jump");
+                // First jump
+                Jump();
+                canDoubleJump = false; // Enable double jump
+            }
+            else if (canDoubleJump)
+            {
+                // Double jump
+                Jump();
+                canDoubleJump = false; // Use up double jump
             }
         }
     }
 
-    // Inside PlayerMovement.cs
-    public bool onWall()
+
+    void FixedUpdate()
     {
-        // Check if the player is actively trying to move left or right
-        // Use the sign of the horizontal input to determine the raycast direction
-        float direction = horizontalInput != 0 ? Mathf.Sign(horizontalInput) : Mathf.Sign(transform.localScale.x);
-
-        // If the player is not pressing a direction, we can use transform.localScale.x 
-        // to check for the wall they are currently stuck to. However, to simplify the wall jump check
-        // we should make sure we are only looking for a wall when we are pressing *against* it.
-
-        // Let's use the player's facing direction if they aren't moving, 
-        // but the actual input direction is usually best for "sticking" to a wall.
-
-        // OPTION A: Using a fixed size check (more robust for just detecting contact)
-        // We check both left and right simultaneously
-        RaycastHit2D hitRight = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0, Vector2.right, 0.1f, wallLayer);
-        RaycastHit2D hitLeft = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0, Vector2.left, 0.1f, wallLayer);
-
-        return hitRight.collider != null || hitLeft.collider != null;
+        // Apply horizontal movement using physics (keeps gravity working properly)
+        rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    void Jump()
     {
+        // Apply vertical velocity for jumping
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
-    public bool isGrounded()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
-        return raycastHit.collider != null;
-    }
 
-    // Inside PlayerMovement.cs (Add this helper method)
-    private int getWallDirection()
+    void OnDrawGizmosSelected()
     {
-        // Check for a wall to the right (direction +1)
-        RaycastHit2D hitRight = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0, Vector2.right, 0.1f, wallLayer);
-        if (hitRight.collider != null)
+        if (groundCheck != null)
         {
-            return 1;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
-
-        // Check for a wall to the left (direction -1)
-        RaycastHit2D hitLeft = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0, Vector2.left, 0.1f, wallLayer);
-        if (hitLeft.collider != null)
-        {
-            return -1;
-        }
-
-        return 0; // No wall detected
     }
-
-
 }
+
