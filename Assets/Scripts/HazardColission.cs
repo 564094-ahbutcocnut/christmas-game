@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HazardColission : MonoBehaviour
 {
@@ -20,8 +21,7 @@ public class HazardColission : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Transform player = collision.gameObject.transform;
-            player.position += Vector3.up * 10.0f;
+            SceneManager.LoadScene("DeathScreen");
         }
     }
 
