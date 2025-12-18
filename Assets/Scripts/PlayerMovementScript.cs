@@ -20,12 +20,20 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;       // Layer considered as ground
 
 
+    Animator animator;
 
-
-
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void Update()
     {
+        float horizontalInput2 = Input.GetAxisRaw("Horizontal");
+
+
+
+
         // Get horizontal input (-1 for left, 1 for right)
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
@@ -33,11 +41,11 @@ public class PlayerMovement : MonoBehaviour
         // Flip the player's sprite to face the direction of movement
         if (horizontalInput < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1); // Face left
+            transform.localScale = new Vector3(-0.2f, 0.2f, 1f); // Face left, 1/5 size
         }
         else if (horizontalInput > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1); // Face right
+            transform.localScale = new Vector3(0.2f, 0.2f, 1f); // Face right, 1/5 size
         }
 
 
@@ -60,8 +68,11 @@ public class PlayerMovement : MonoBehaviour
                 // Double jump
                 Jump();
                 canDoubleJump = false; // Use up double jump
+           
             }
         }
+        animator.SetFloat("Speed", Mathf.Abs(horizontalInput2));
+
     }
 
 
