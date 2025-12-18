@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         if (wallJumpCooldown <= 0)
         {
             // Standard horizontal movement
-            body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
+            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
         }
 
         // 2. Player Flip Logic
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // Apply wall slide effect
             body.gravityScale = 0;
-            body.linearVelocity = Vector2.zero; // Or a controlled vertical slide velocity
+            body.velocity = Vector2.zero; // Or a controlled vertical slide velocity
         }
         else
         {
@@ -117,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded())
         {
-            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpPower);
+            body.velocity = new Vector2(body.velocity.x, jumpPower);
             anim.SetTrigger("jump");
         }
         else if (onWall() && !isGrounded())
@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
                 // Apply force AWAY from the wall (jumpDirection is the opposite of the wall's direction)
                 float jumpDirection = -wallDir;
 
-                body.linearVelocity = new Vector2(jumpDirection * wallJumpX, wallJumpY);
+                body.velocity = new Vector2(jumpDirection * wallJumpX, wallJumpY);
 
                 // Face the direction of the jump
                 spritegraphic.flipX = jumpDirection < 0; // Flip sprite if jumping left

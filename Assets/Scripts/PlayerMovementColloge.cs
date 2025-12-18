@@ -57,13 +57,13 @@ public class PlayerMovementCollege : MonoBehaviour
     void FixedUpdate()
     {
         // Apply horizontal movement using physics (keeps gravity working properly)
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
     }
 
     void Jump()
     {
         // Apply vertical velocity for jumping
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
     void OnDrawGizmosSelected()
