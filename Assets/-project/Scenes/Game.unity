@@ -910,6 +910,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 706817055837346437, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_Size.x
+      value: 8.322898
+      objectReference: {fileID: 0}
+    - target: {fileID: 706817055837346437, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_Size.y
+      value: 9.857216
+      objectReference: {fileID: 0}
+    - target: {fileID: 706817055837346437, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.34871054
+      objectReference: {fileID: 0}
+    - target: {fileID: 706817055837346437, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.069741964
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214450900366585805, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214450900366585805, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214450900366585805, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030382479093741114, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 7331621052080079520, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -959,12 +991,10 @@ PrefabInstance:
       value: 0.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6610562663556040078, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6610562663556040078, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d494ce33508e52469e4486e15eb5b77, type: 3}
 --- !u!1001 &5334079613023309718
 PrefabInstance:
