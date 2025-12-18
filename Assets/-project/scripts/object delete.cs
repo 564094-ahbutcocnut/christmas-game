@@ -15,4 +15,12 @@ public class objectdelete : MonoBehaviour
     {
         
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag =="delete")
+        {
+            Destroy(gameObject);
+        }
+    }
 }
