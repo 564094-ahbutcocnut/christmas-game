@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class objectdelete : MonoBehaviour
@@ -15,4 +16,22 @@ public class objectdelete : MonoBehaviour
     {
         
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "delete")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag =="delete")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+
 }
