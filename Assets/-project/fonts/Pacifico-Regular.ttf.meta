@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bfad21a4dd0ccd843affe63ce20f90e4
+guid: ef328fab7db0f764d8f4bdfa4ca7e162
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Allura
+  - Pacifico
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
