@@ -140,6 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9086317563909169016}
   - component: {fileID: 1871080167596176071}
+  - component: {fileID: 8941067832064351979}
   m_Layer: 6
   m_Name: traps
   m_TagString: obstical
@@ -190,3 +191,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 6
+--- !u!114 &8941067832064351979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7747704327167176902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95543ffa6a22dbe48b3d217c3fbd9c45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
